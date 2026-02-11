@@ -4,253 +4,234 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>M&A Intelligence Hub | Dashboard</title>
+    <title>Dashboard | M&A Intelligence Hub</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon"
-        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23041E42' width='100' height='100' rx='8'/><text x='50' y='68' font-size='54' fill='white' text-anchor='middle' font-weight='bold'>M</text></svg>">
-    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Source+Code+Pro:wght@400;500;600&display=swap"
+        rel="stylesheet">
     <style>
-        /* Dashboard specific overrides */
-        body {
-            background: var(--bg-light);
+        /* Dashboard Specific Styles */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
         }
 
-        .dashboard-container {
-            max-width: 1440px;
-            margin: 0 auto;
-            padding: 0 var(--space-4);
-        }
-
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 4px 12px;
-            border-radius: var(--radius-sm);
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .status-badge.success {
-            background: #D1F4E0;
-            color: var(--sp-green);
-        }
-
-        .status-badge.warning {
-            background: #FEF3C7;
-            color: #D97706;
-        }
-
-        .status-badge.error {
-            background: #FEE2E2;
-            color: var(--sp-red);
-        }
-
-        .status-badge.info {
-            background: #DBEAFE;
-            color: var(--sp-royal-blue);
-        }
-
-        .search-bar {
-            margin-bottom: var(--space-4);
-            display: flex;
-            gap: var(--space-2);
-        }
-
-        .search-input {
-            flex: 1;
-            padding: 12px 16px;
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-sm);
-            font-size: 0.9rem;
-        }
-
-        .table-container {
-            background: white;
-            border: 1px solid var(--border-color);
+        .stat-card {
+            background: var(--bg-white);
+            padding: 24px;
             border-radius: var(--radius-md);
-            overflow-x: auto;
+            border: 1px solid var(--border-color);
             box-shadow: var(--shadow-sm);
         }
 
-        table {
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--sp-royal-blue);
+        }
+
+        .data-table-container {
+            background: var(--bg-white);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .data-table {
             width: 100%;
             border-collapse: collapse;
         }
 
-        th {
-            background: var(--bg-light);
-            padding: 16px;
+        .data-table th,
+        .data-table td {
+            padding: 16px 24px;
             text-align: left;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-secondary);
-            border-bottom: 2px solid var(--border-color);
-            white-space: nowrap;
-        }
-
-        td {
-            padding: 16px;
             border-bottom: 1px solid var(--border-color);
-            font-size: 0.875rem;
-            color: var(--text-primary);
-            vertical-align: middle;
         }
 
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        tr:hover {
+        .data-table th {
             background: var(--bg-light);
-            cursor: pointer;
-        }
-
-        .score-cell {
-            font-family: var(--font-mono);
             font-weight: 600;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
         }
 
-        .score-high {
-            color: var(--sp-green);
+        .data-table tr:hover {
+            background: var(--bg-light);
         }
 
-        .score-mid {
-            color: #D97706;
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
         }
 
-        .score-low {
-            color: var(--text-muted);
+        .badge-success {
+            background: #E6F4EA;
+            color: #1E8E3E;
         }
 
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(4, 30, 66, 0.4);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            backdrop-filter: blur(4px);
+        .badge-warning {
+            background: #FEF7E0;
+            color: #F9AB00;
         }
 
-        .modal.active {
-            display: flex;
+        .badge-danger {
+            background: #FCE8E6;
+            color: #D93025;
         }
 
-        .modal-content {
-            background: white;
-            width: 90%;
-            max-width: 800px;
-            max-height: 90vh;
-            overflow-y: auto;
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-xl);
-            padding: var(--space-6);
-            position: relative;
+        .badge-neutral {
+            background: #F1F3F4;
+            color: #5F6368;
         }
 
-        .close-modal {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--text-secondary);
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(255, 107, 107, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 107, 107, 0);
+            }
         }
     </style>
 </head>
 
 <body>
 
+    <!-- ============ NAVBAR ============ -->
     <nav class="navbar" id="navbar">
         <div class="container">
             <a href="index.html" class="nav-logo">
                 <span class="logo-mark">M&A</span>
                 Intelligence Hub
             </a>
-            <div class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="#" class="active">Dashboard</a>
+            <div class="nav-links" id="nav-links">
+                <a href="index.html#features">Features</a>
+                <a href="index.html#demo">Demo</a>
+                <a href="#" class="active">Dashboard <span id="live-indicator"
+                        style="width:8px;height:8px;background:var(--sp-green);border-radius:50%;display:inline-block;margin-left:4px;"></span></a>
             </div>
         </div>
     </nav>
 
-    <div style="height: 100px;"></div>
-
-    <div class="dashboard-container">
-        <div class="section-header">
-            <span class="section-eyebrow">Real-Time Data</span>
-            <h2>Document Intelligence Dashboard</h2>
-            <p class="lead">Live view of all documents processed by the M&A pipeline.</p>
-        </div>
-
-        <!-- Quick Stats -->
-        <div class="metrics-grid" style="margin-bottom: 40px;">
-            <div class="metric-card bg-white" style="border: 1px solid var(--border-color);">
-                <div class="metric-value text-navy" id="total-docs" style="color: var(--sp-navy);">0</div>
-                <div class="metric-label text-gray" style="color: var(--text-secondary);">Total Documents</div>
+    <!-- ============ DASHBOARD CONTENT ============ -->
+    <main style="padding-top: 100px; min-height: 80vh;">
+        <div class="container">
+            <div class="section-header centered">
+                <span class="section-eyebrow">Real-Time Intelligence</span>
+                <h2>Processing Dashboard</h2>
+                <p class="lead">Live view of your document analysis pipeline.</p>
             </div>
-            <div class="metric-card bg-white" style="border: 1px solid var(--border-color);">
-                <div class="metric-value text-navy" id="ma-docs" style="color: var(--sp-green);">0</div>
-                <div class="metric-label text-gray" style="color: var(--text-secondary);">M&A Related</div>
+
+            <!-- Stats Grid -->
+            <div class="dashboard-grid reveal">
+                <div class="stat-card">
+                    <div class="stat-label">Total Documents Processed</div>
+                    <div class="stat-value" id="stat-total-docs">-</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Currently Processing</div>
+                    <div class="stat-value" id="stat-processing" style="color: var(--sp-orange);">-</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Avg. Confidence Score</div>
+                    <div class="stat-value" id="stat-avg-confidence">-</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Database Status</div>
+                    <div class="stat-value" style="font-size: 1rem; color: var(--sp-green);">Connected ●</div>
+                </div>
             </div>
-            <div class="metric-card bg-white" style="border: 1px solid var(--border-color);">
-                <div class="metric-value text-navy" id="tech-docs" style="color: var(--sp-royal-blue);">0</div>
-                <div class="metric-label text-gray" style="color: var(--text-secondary);">Tech Deals</div>
+
+            <!-- Main Data Table -->
+            <div class="data-table-container reveal" style="animation-delay: 0.1s;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th width="40%">Filename</th>
+                            <th width="20%">Date Uploaded</th>
+                            <th width="15%">Status</th>
+                            <th width="10%">Confidence</th>
+                            <th width="15%">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dashboard-table-body">
+                        <!-- Data populated by JS -->
+                    </tbody>
+                </table>
+
+                <div id="loading-spinner" style="padding:40px; text-align:center;">
+                    <div class="spinner" style="width:30px;height:30px;border-width:3px;margin:0 auto 10px;"></div>
+                    <p style="color:var(--text-muted);font-size:0.875rem;">Loading live data...</p>
+                </div>
+
+                <div id="dashboard-error"
+                    style="display:none; padding:20px; text-align:center; color:var(--sp-red); background:var(--bg-light);">
+                </div>
             </div>
-            <div class="metric-card bg-white" style="border: 1px solid var(--border-color);">
-                <div class="metric-value text-navy" id="avg-confidence" style="color: var(--sp-navy);">0%</div>
-                <div class="metric-label text-gray" style="color: var(--text-secondary);">Avg Confidence</div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="index.html" class="btn btn-secondary">← Back to Upload</a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+                <p>© 2025 M&A Intelligence Hub. Powered by S&P Global.</p>
             </div>
         </div>
+    </footer>
 
-        <div class="search-bar">
-            <input type="text" class="search-input" id="search"
-                placeholder="Search documents, companies, or keywords...">
-            <button class="btn btn-primary" id="refresh-btn">Refresh Data</button>
-        </div>
+    <!-- Supabase Client & Dashboard Logic -->
+    <script src="dashboard.js" type="module"></script>
 
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Status</th>
-                        <th>Document Name</th>
-                        <th>Type</th>
-                        <th>M&A Score</th>
-                        <th>Tech Score</th>
-                        <th>Deal Value</th>
-                        <th>Date</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="table-body">
-                    <tr>
-                        <td colspan="8" style="text-align: center;">Loading data...</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- Detail Modal -->
-    <div class="modal" id="detail-modal">
-        <div class="modal-content">
-            <button class="close-modal">&times;</button>
-            <div id="modal-body"></div>
-        </div>
-    </div>
-
-    <script src="config.js"></script>
-    <script src="dashboard.js"></script>
+    <script>
+        // Check for file:// protocol causing CORS issues
+        if (window.location.protocol === 'file:') {
+            const errorDiv = document.getElementById('dashboard-error');
+            const spinner = document.getElementById('loading-spinner');
+            if (errorDiv) {
+                if (spinner) spinner.style.display = 'none';
+                errorDiv.style.display = 'block';
+                errorDiv.innerHTML = `
+                <h3 style="margin-bottom:10px;">⚠️ Protocol Error</h3>
+                <p>You are viewing this file directly from your computer (file://).</p>
+                <p>The dashboard requires a web server to connect securely to Supabase.</p>
+                <div style="margin-top:20px;">
+                    <a href="http://localhost:3000/dashboard.html" class="btn btn-primary">Switch to Local Server</a>
+                </div>
+            `;
+            }
+        }
+    </script>
 </body>
 
 </html>
+```

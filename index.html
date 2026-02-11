@@ -13,6 +13,22 @@
 </head>
 
 <body>
+  <!-- ============ ACCESS CODE MODAL ============ -->
+  <div id="access-modal" class="access-modal" style="display: none;">
+    <div class="access-card">
+      <div class="access-logo">
+        <span class="logo-mark">M&A</span>
+        Intelligence Hub
+      </div>
+      <h2>Protected Content</h2>
+      <p>Please enter the access code to view this prototype.</p>
+      <div class="access-form">
+        <input type="password" id="access-code" placeholder="Enter Access Code" autofocus>
+        <button id="access-btn" class="btn btn-primary">Enter</button>
+      </div>
+      <p id="access-error" class="access-error">Incorrect code. Please try again.</p>
+    </div>
+  </div>
 
   <a href="#main" class="skip-link">Skip to main content</a>
 
@@ -432,9 +448,11 @@
         <div class="demo-container">
           <div class="upload-zone reveal" id="upload-zone" role="button" tabindex="0"
             aria-label="Upload documents for analysis">
+            <input type="file" id="file-upload" accept="application/pdf" multiple style="display: none;" />
             <span class="upload-icon" aria-hidden="true">⬆</span>
             <h3>Drop Documents Here</h3>
             <p>Or click to select sample documents for analysis</p>
+            <p style="font-size: 0.8rem; color: var(--sp-royal-blue); margin-top: 8px;">Supports PDF only</p>
           </div>
 
           <div class="sample-docs reveal">
@@ -911,6 +929,16 @@
             <div class="team-avatar">D</div>
             <h4>Daniyal</h4>
             <p class="team-role">Full-Stack Developer</p>
+          </div>
+          <div class="team-card">
+            <div class="team-avatar">S</div>
+            <h4>Salman Ahmed</h4>
+            <p class="team-role">Team Member</p>
+          </div>
+          <div class="team-card">
+            <div class="team-avatar">A</div>
+            <h4>Ahmed Ali</h4>
+            <p class="team-role">Team Member</p>
           </div>
         </div>
 

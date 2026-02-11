@@ -1,218 +1,136 @@
-/**
- * M&A Intelligence Hub - Dashboard Logic
- * Fetches real-time data from Supabase
- */
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-const { createClient } = supabase;
+// Configuration
+const SUPABASE_URL = 'https://kqaapsafjbnqqrgbjjbb.supabase.co'
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtxYWFwc2FmamJucXFyZ2JqamJiIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MDgwMzk0MywiZXhwIjoyMDg2Mzc5OTQzfQ.74cSemjE6TlV68ZKoeYJrDNoFqT9tslvaNYYcipouHk'
 
-// Initialize Supabase
-const sbParam = {
-    url: window.SUPABASE_CONFIG.url,
-    key: window.SUPABASE_CONFIG.key
-};
-
-const supabaseClient = createClient(sbParam.url, sbParam.key);
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
 
 // DOM Elements
-const tableBody = document.getElementById('table-body');
-const searchInput = document.getElementById('search');
-const refreshBtn = document.getElementById('refresh-btn');
-const modal = document.getElementById('detail-modal');
-const modalBody = document.getElementById('modal-body');
-const closeModal = document.querySelector('.close-modal');
+const tableBody = document.getElementById('dashboard-table-body')
+const loadingSpinner = document.getElementById('loading-spinner')
+const liveBadge = document.getElementById('live-indicator')
+const errorMsg = document.getElementById('dashboard-error')
 
-// State
-let allDocuments = [];
+// Stats Elements
+const statTotalDocs = document.getElementById('stat-total-docs')
+const statAvgConfidence = document.getElementById('stat-avg-confidence')
+const statProcessing = document.getElementById('stat-processing')
 
-// Fetch initial data
-fetchDocuments();
-
-// Event Listeners
-refreshBtn.addEventListener('click', fetchDocuments);
-searchInput.addEventListener('input', (e) => filterDocuments(e.target.value));
-closeModal.addEventListener('click', () => modal.classList.remove('active'));
-window.addEventListener('click', (e) => {
-    if (e.target === modal) modal.classList.remove('active');
-});
+async function initDashboard() {
+  console.log('Initializing Dashboard...')
+  try {
+    await fetchDocuments()
+    subscribeToChanges()
+  } catch (err) {
+    console.error('Dashboard Init Error:', err)
+    showError('Failed to initialize dashboard connection.')
+  }
+}
 
 async function fetchDocuments() {
-    tableBody.innerHTML = '<tr><td colspan="8" style="text-align: center;">Loading data...</td></tr>';
+  loadingSpinner.style.display = 'block'
+  errorMsg.style.display = 'none'
 
-    const { data, error } = await supabaseClient
-        .from('ma_documents')
-        .select('*')
-        .order('processed_date', { ascending: false });
+  const { data, error } = await supabase
+    .from('ma_documents')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(50)
 
-    if (error) {
-        console.error('Error fetching documents:', error);
-        tableBody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: var(--sp-red);">Error loading data: ${error.message}</td></tr>`;
-        return;
-    }
+  loadingSpinner.style.display = 'none'
 
-    allDocuments = data || [];
-    updateMetrics();
-    renderTable(allDocuments);
+  if (error) {
+    console.error('Supabase Error:', error)
+    showError(error.message)
+    return
+  }
+
+  renderTable(data)
+  updateStats(data)
 }
 
-function updateMetrics() {
-    const total = allDocuments.length;
-    const maRelated = allDocuments.filter(d => d.is_ma_related).length;
-    const techRelated = allDocuments.filter(d => d.is_tech_related).length;
-
-    const avgConf = total > 0
-        ? Math.round(allDocuments.reduce((sum, d) => sum + (d.confidence_score || 0), 0) / total)
-        : 0;
-
-    document.getElementById('total-docs').textContent = total;
-    animateValue(document.getElementById('ma-docs'), 0, maRelated, 1000);
-    animateValue(document.getElementById('tech-docs'), 0, techRelated, 1000);
-    document.getElementById('avg-confidence').textContent = avgConf + '%';
+function subscribeToChanges() {
+  supabase
+    .channel('ma_documents_changes')
+    .on(
+      'postgres_changes',
+      { event: '*', schema: 'public', table: 'ma_documents' },
+      (payload) => {
+        console.log('Real-time change received!', payload)
+        liveBadge.classList.add('pulse')
+        setTimeout(() => liveBadge.classList.remove('pulse'), 2000)
+        fetchDocuments() // Simple refresh
+      }
+    )
+    .subscribe()
 }
 
-function renderTable(docs) {
-    if (docs.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="8" style="text-align: center;">No documents found.</td></tr>';
-        return;
-    }
+function renderTable(documents) {
+  if (!documents || documents.length === 0) {
+    tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 2rem;">No documents found. Upload some PDF files to get started.</td></tr>'
+    return
+  }
 
-    tableBody.innerHTML = docs.map(doc => {
-        const statusClass = getStatusClass(doc.processing_status);
-        const maScoreClass = getScoreClass(doc.confidence_score);
-        const techScoreClass = getScoreClass(doc.tech_confidence_score);
+  tableBody.innerHTML = documents.map(doc => {
+    const statusClass = getStatusClass(doc.status)
+    const confidence = doc.confidence_score ? `${Math.round(doc.confidence_score * 100)}%` : '-'
+    const date = new Date(doc.created_at).toLocaleString()
 
-        return `
-      <tr onclick="showDetails('${doc.document_id}')">
-        <td><span class="status-badge ${statusClass}">${doc.processing_status || 'Unknown'}</span></td>
-        <td><strong>${doc.file_name}</strong></td>
-        <td>${doc.transaction_type || '-'}</td>
-        <td class="score-cell ${maScoreClass}">${doc.confidence_score}%</td>
-        <td class="score-cell ${techScoreClass}">${doc.tech_confidence_score}%</td>
-        <td>${doc.deal_value || '-'}</td>
-        <td>${new Date(doc.processed_date).toLocaleDateString()}</td>
-        <td><button class="btn btn-sm btn-ghost">View</button></td>
-      </tr>
-    `;
-    }).join('');
+    return `
+            <tr class="fade-in">
+                <td>
+                    <div class="file-info">
+                        <span class="file-icon">📄</span>
+                        <span class="filename" title="${doc.filename}">${doc.filename}</span>
+                    </div>
+                </td>
+                <td>${date}</td>
+                <td><span class="badge ${statusClass}">${doc.status || 'Pending'}</span></td>
+                <td>${confidence}</td>
+                <td>
+                    <button class="btn-sm" onclick="viewDetails('${doc.id}')">View Analysis</button>
+                </td>
+            </tr>
+        `
+  }).join('')
 }
 
-function filterDocuments(query) {
-    const lowerQuery = query.toLowerCase();
-    const filtered = allDocuments.filter(doc =>
-        (doc.file_name && doc.file_name.toLowerCase().includes(lowerQuery)) ||
-        (doc.acquiring_company && doc.acquiring_company.toLowerCase().includes(lowerQuery)) ||
-        (doc.target_company && doc.target_company.toLowerCase().includes(lowerQuery)) ||
-        (doc.context && doc.context.toLowerCase().includes(lowerQuery))
-    );
-    renderTable(filtered);
+function updateStats(docs) {
+  if (!docs) return
+  statTotalDocs.textContent = docs.length
+
+  const processing = docs.filter(d => d.status === 'processing').length
+  statProcessing.textContent = processing
+
+  const completed = docs.filter(d => d.confidence_score !== null)
+  if (completed.length > 0) {
+    const avg = completed.reduce((acc, curr) => acc + (curr.confidence_score || 0), 0) / completed.length
+    statAvgConfidence.textContent = `${Math.round(avg * 100)}%`
+  } else {
+    statAvgConfidence.textContent = '-'
+  }
 }
 
-function showDetails(id) {
-    const doc = allDocuments.find(d => d.document_id === id);
-    if (!doc) return;
-
-    const maIndicators = (doc.ma_indicators || []).map(i => `<span class="feature-tag">${i}</span>`).join('');
-    const keyPoints = (doc.key_points || []).map(p => `<li>${p}</li>`).join('');
-
-    modalBody.innerHTML = `
-    <div style="border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 20px;">
-      <h2 style="color: var(--sp-navy); margin-bottom: 8px;">${doc.file_name}</h2>
-      <div style="display: flex; gap: 12px; font-size: 0.875rem; color: var(--text-secondary);">
-        <span>ID: ${doc.document_id}</span>
-        <span>Processed: ${new Date(doc.processed_date).toLocaleString()}</span>
-      </div>
-    </div>
-
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
-      <div style="background: var(--bg-light); padding: 20px; border-radius: var(--radius-md);">
-        <h4 style="margin-bottom: 12px; color: var(--sp-royal-blue);">M&A Analysis</h4>
-        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-          <span>Is M&A Related:</span>
-          <strong>${doc.is_ma_related ? 'Yes' : 'No'}</strong>
-        </div>
-        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-          <span>Confidence Score:</span>
-          <strong>${doc.confidence_score}%</strong>
-        </div>
-        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-          <span>Transaction Type:</span>
-          <strong>${doc.transaction_type}</strong>
-        </div>
-        <div style="display: flex; justify-content: space-between;">
-          <span>Deal Value:</span>
-          <strong>${doc.deal_value || 'Unknown'}</strong>
-        </div>
-      </div>
-
-      <div style="background: var(--bg-light); padding: 20px; border-radius: var(--radius-md);">
-        <h4 style="margin-bottom: 12px; color: var(--sp-royal-blue);">Tech Classification</h4>
-        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-          <span>Is Tech Related:</span>
-          <strong>${doc.is_tech_related ? 'Yes' : 'No'}</strong>
-        </div>
-        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-          <span>Tech Confidence:</span>
-          <strong>${doc.tech_confidence_score}%</strong>
-        </div>
-        <div style="display: flex; justify-content: space-between;">
-          <span>Industry:</span>
-          <strong>${doc.industry_classification}</strong>
-        </div>
-      </div>
-    </div>
-
-    <div style="margin-bottom: 24px;">
-      <h4 style="margin-bottom: 12px;">Key Insights</h4>
-      <ul style="list-style-type: disc; padding-left: 20px; line-height: 1.6;">
-        ${keyPoints || '<li>No key points extracted.</li>'}
-      </ul>
-    </div>
-
-    <div style="margin-bottom: 24px;">
-      <h4 style="margin-bottom: 12px;">AI Reasoning</h4>
-      <p style="background: var(--bg-light); padding: 16px; border-left: 4px solid var(--sp-royal-blue); border-radius: 4px;">
-        ${doc.reasoning || 'No reasoning provided.'}
-      </p>
-    </div>
-
-     <div style="margin-bottom: 24px;">
-      <h4 style="margin-bottom: 12px;">Raw Text Excerpt</h4>
-      <p style="font-size: 0.8rem; color: var(--text-secondary); background: #f5f5f5; padding: 12px; border-radius: 4px; max-height: 150px; overflow-y: auto;">
-        ${doc.raw_text_excerpt || 'No excerpt available.'}
-      </p>
-    </div>
-
-    <div style="display: flex; justify-content: flex-end; gap: 12px;">
-      <button class="btn btn-secondary" onclick="document.querySelector('.close-modal').click()">Close</button>
-      <a href="${doc.file_url || '#'}" target="_blank" class="btn btn-primary" ${!doc.file_url ? 'disabled' : ''}>View Original File</a>
-    </div>
-  `;
-
-    modal.classList.add('active');
-}
-
-// Helpers
 function getStatusClass(status) {
-    if (!status) return 'info';
-    status = status.toLowerCase();
-    if (status === 'completed' || status === 'processed') return 'success';
-    if (status === 'failed' || status === 'error') return 'error';
-    if (status === 'pending') return 'warning';
-    return 'info';
+  switch (status?.toLowerCase()) {
+    case 'completed': return 'badge-success'
+    case 'processing': return 'badge-warning'
+    case 'failed': return 'badge-danger'
+    default: return 'badge-neutral'
+  }
 }
 
-function getScoreClass(score) {
-    if (score >= 80) return 'score-high';
-    if (score >= 50) return 'score-mid';
-    return 'score-low';
+function showError(msg) {
+  errorMsg.textContent = `Error: ${msg}`
+  errorMsg.style.display = 'block'
 }
 
-function animateValue(obj, start, end, duration) {
-    let startTimestamp = null;
-    const step = (timestamp) => {
-        if (!startTimestamp) startTimestamp = timestamp;
-        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-        obj.innerHTML = Math.floor(progress * (end - start) + start);
-        if (progress < 1) window.requestAnimationFrame(step);
-    };
-    window.requestAnimationFrame(step);
+// Make viewDetails globally accessible
+window.viewDetails = async (id) => {
+  alert(`Showing details for Document ID: ${id}\n(Modal implementation pending full data structure)`)
+  // In a full implementation, we would fetch the specific row and show the JSON analysis
 }
+
+// Start
+document.addEventListener('DOMContentLoaded', initDashboard)
