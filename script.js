@@ -210,25 +210,35 @@ function initDemo() {
     function handleFiles(files) {
         // Convert FileList to Array
         const fileArray = Array.from(files);
-        const validFiles = fileArray.filter(f => f.type === 'application/pdf');
+        const validExtensions = ['pdf', 'doc', 'docx', 'txt', 'rtf', 'html', 'htm'];
+
+        const validFiles = fileArray.filter(f => {
+            const ext = f.name.split('.').pop().toLowerCase();
+            return validExtensions.includes(ext);
+        });
 
         if (validFiles.length === 0) {
-            alert('Please upload PDF files only.');
+            alert('Please upload supported files (PDF, DOCX, TXT, RTF, HTML).');
             return;
         }
 
         if (validFiles.length < fileArray.length) {
-            console.warn(`Skipped ${fileArray.length - validFiles.length} non-PDF files.`);
+            console.warn(`Skipped ${fileArray.length - validFiles.length} unsupported files.`);
         }
 
         currentMode = 'upload';
         uploadFiles(validFiles);
     }
 
+    // Flag to prevent double submission
+    let isUploading = false;
+
     // UPDATED: Single Batch Upload
     function uploadFiles(files) {
         if (!processBtn) return;
+        if (isUploading) return; // Prevent double submission
 
+        isUploading = true;
         // UI Feedback
         processBtn.disabled = true;
         processingBar.classList.add('active');
@@ -270,6 +280,7 @@ function initDemo() {
                         processBtn.textContent = 'Upload More';
                         processBtn.style.backgroundColor = '';
                         processBtn.style.color = '';
+                        isUploading = false;
                         processBtn.disabled = false;
                     }, 1000);
                 } else {
@@ -282,6 +293,7 @@ function initDemo() {
                 processBtn.textContent = 'Error';
                 progressFill.style.background = 'var(--sp-red)';
                 processBtn.disabled = false;
+                isUploading = false;
             });
     }
 

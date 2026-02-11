@@ -215,112 +215,88 @@
         </div>
     </main>
 
-    <!-- Generic Message Modal -->
-    <div id="message-modal" class="modal-backdrop"
-        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1010; justify-content: center; align-items: center;">
-        <div class="modal-content fade-in-up"
-            style="width: 400px; background: white; border-radius: 8px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); text-align: center;">
-            <div id="msg-icon" style="font-size: 3rem; margin-bottom: 16px;"></div>
-            <h3 id="msg-title" style="margin-bottom: 12px; color: var(--text-primary); font-size: 1.25rem;">Title</h3>
-            <p id="msg-text" style="color: var(--text-secondary); margin-bottom: 24px; line-height: 1.5;">Message
-                content.</p>
-            <button onclick="closeMessageModal()" class="btn btn-primary" style="min-width: 120px;">Close</button>
-        </div>
-    </div>
-
-    <style>
-        .fade-in-up {
-            animation: fadeInUp 0.3s ease-out;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
-
     <!-- Analysis Details Modal -->
     <div id="analysis-modal" class="modal-backdrop"
         style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: flex-end;">
         <div class="modal-content slide-in-right"
             style="width: 600px; height: 100%; background: white; padding: 0; box-shadow: -4px 0 15px rgba(0,0,0,0.1); overflow-y: auto; display: flex; flex-direction: column;">
-            < !-- Modal Header -->
-                <div
-                    style="padding: 24px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: flex-start; background: var(--bg-light);">
-                    <div>
-                        <h2 id="modal-filename"
-                            style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; word-break: break-all;">
-                            Filename.pdf</h2>
-                        <div style="font-size: 0.875rem; color: var(--text-secondary);">ID: <span id="modal-id"
-                                style="font-family: monospace;">...</span>• Processed: <span id="modal-date">...</span>
-                        </div>
-                    </div><button onclick="closeModal()"
-                        style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-secondary);">&times;
-                    </button>
-                </div>
-                < !-- Modal Body -->
-                    <div style="padding: 24px; flex: 1;">
-                        < !-- Top Row Cards -->
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
-                                < !-- Card A: M&A Analysis -->
-                                    <div
-                                        style="background: var(--bg-white); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 16px;">
-                                        <h4
-                                            style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 12px;">
-                                            M&A Analysis</h4>
-                                        <div style="margin-bottom: 8px; font-size: 0.875rem;">Is M&A Related: <strong
-                                                id="modal-is-ma">Yes</strong></div>
-                                        <div style="margin-bottom: 8px; font-size: 0.875rem;">Confidence: <strong
-                                                id="modal-ma-confidence">95%</strong></div>
-                                        <div style="margin-bottom: 8px; font-size: 0.875rem;">Type: <strong
-                                                id="modal-trans-type">Merge</strong></div>
-                                        <div style="font-size: 0.875rem;">Deal Value: <strong
-                                                id="modal-deal-value">$68B</strong></div>
-                                    </div>
-                                    < !-- Card B: Tech Classification -->
-                                        <div
-                                            style="background: var(--bg-white); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 16px;">
-                                            <h4
-                                                style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 12px;">
-                                                Tech Classification</h4>
-                                            <div style="margin-bottom: 8px; font-size: 0.875rem;">Is Tech Related:
-                                                <strong id="modal-is-tech">Yes</strong></div>
-                                            <div style="margin-bottom: 8px; font-size: 0.875rem;">Tech Confidence:
-                                                <strong id="modal-tech-confidence">98%</strong></div>
-                                            <div style="font-size: 0.875rem;">Industry: <strong
-                                                    id="modal-industry">Software</strong></div>
-                                        </div>
-                            </div>
-                            < !-- Key Insights -->
-                                <div style="margin-bottom: 24px;">
-                                    <h4
-                                        style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-primary); font-weight: 700; margin-bottom: 12px;">
-                                        Key Insights</h4>
-                                    <ul id="modal-insights"
-                                        style="list-style-type: disc; padding-left: 20px; color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6;">
-                                        < !-- LI items -->
-                                    </ul>
-                                </div>
-                                < !-- AI Reasoning -->
-                                    <div>
-                                        <h4
-                                            style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-primary); font-weight: 700; margin-bottom: 8px;">
-                                            AI Reasoning</h4>
-                                        <div
-                                            style="background: var(--bg-light); border-left: 4px solid var(--sp-royal-blue); padding: 16px; font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
-                                            <p id="modal-reasoning">The document explicitly discusses...</p>
-                                        </div>
-                                    </div>
+
+
+            <div
+                style="padding: 24px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: flex-start; background: var(--bg-light);">
+                <div>
+                    <h2 id="modal-filename"
+                        style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; word-break: break-all;">
+                        Filename.pdf</h2>
+                    <div style="font-size: 0.875rem; color: var(--text-secondary);">
+                        ID: <span id="modal-id" style="font-family: monospace;">...</span> • Processed: <span
+                            id="modal-date">...</span>
                     </div>
+                </div>
+                <button onclick="closeModal()"
+                    style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-secondary);">&times;</button>
+            </div>
+
+
+            <div style="padding: 24px; flex: 1;">
+
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
+
+                    <div
+                        style="background: var(--bg-white); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 16px;">
+                        <h4
+                            style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 12px;">
+                            M&A Analysis</h4>
+                        <div style="margin-bottom: 8px; font-size: 0.875rem;">Is M&A Related: <strong
+                                id="modal-is-ma">Yes</strong></div>
+                        <div style="margin-bottom: 8px; font-size: 0.875rem;">Confidence: <strong
+                                id="modal-ma-confidence">95%</strong></div>
+                        <div style="margin-bottom: 8px; font-size: 0.875rem;">Type: <strong
+                                id="modal-trans-type">Merge</strong></div>
+                        <div style="font-size: 0.875rem;">Deal Value: <strong id="modal-deal-value">$68B</strong></div>
+                    </div>
+
+
+                    <div
+                        style="background: var(--bg-white); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 16px;">
+                        <h4
+                            style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 12px;">
+                            Tech Classification</h4>
+                        <div style="margin-bottom: 8px; font-size: 0.875rem;">Is Tech Related: <strong
+                                id="modal-is-tech">Yes</strong></div>
+                        <div style="margin-bottom: 8px; font-size: 0.875rem;">Tech Confidence: <strong
+                                id="modal-tech-confidence">98%</strong></div>
+                        <div style="font-size: 0.875rem;">Industry: <strong id="modal-industry">Software</strong></div>
+                    </div>
+                </div>
+
+
+                <div style="margin-bottom: 24px;">
+                    <h4
+                        style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-primary); font-weight: 700; margin-bottom: 12px;">
+                        Key Insights</h4>
+                    <ul id="modal-insights"
+                        style="list-style-type: disc; padding-left: 20px; color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6;">
+                        <!-- LI items -->
+                    </ul>
+                </div>
+
+
+                <div>
+                    <h4
+                        style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-primary); font-weight: 700; margin-bottom: 8px;">
+                        AI Reasoning</h4>
+                    <div
+                        style="background: var(--bg-light); border-left: 4px solid var(--sp-royal-blue); padding: 16px; font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+                        <p id="modal-reasoning">The document explicitly discusses...</p>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
+
     <style>
         .slide-in-right {
             animation: slideInRight 0.3s ease-out;

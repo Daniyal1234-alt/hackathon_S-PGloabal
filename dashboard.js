@@ -35,6 +35,45 @@ async function initDashboard() {
   }
 }
 
+function initAutoArrange() {
+  if (!autoArrangeBtn) return;
+
+  autoArrangeBtn.addEventListener('click', async () => {
+    const icon = document.getElementById('arrange-icon');
+    const text = document.getElementById('arrange-text');
+    const originalIcon = icon.textContent;
+
+    // Loading State
+    autoArrangeBtn.disabled = true;
+    autoArrangeBtn.style.opacity = '0.8';
+    icon.innerHTML = '<span style="display:inline-block;width:14px;height:14px;border:2px solid white;border-right-color:transparent;border-radius:50%;animation:spin 1s linear infinite;"></span>';
+    text.textContent = 'Processing...';
+
+    try {
+      const response = await fetch(N8N_AUTO_ARRANGE_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'auto_arrange', timestamp: new Date().toISOString() })
+      });
+
+      if (response.ok) {
+        alert('✅ Google Drive files have been organized successfully!');
+      } else {
+        throw new Error('Webhook returned error');
+      }
+    } catch (err) {
+      console.error('Auto Arrange Error:', err);
+      alert('❌ Failed to trigger auto-arrange. Please try again.');
+    } finally {
+      // Reset UI
+      autoArrangeBtn.disabled = false;
+      autoArrangeBtn.style.opacity = '1';
+      icon.textContent = originalIcon;
+      text.textContent = 'Auto Arrange Drive';
+    }
+  });
+}
+
 async function fetchDocuments() {
   loadingSpinner.style.display = 'block'
   errorMsg.style.display = 'none'
@@ -171,86 +210,11 @@ if (modal) {
   })
 }
 
-// Helper to clean text encoding issues
-function cleanText(text) {
-  if (!text) return '';
-  return text
-    .replace(/[â€¢Â·]/g, '') // Remove weird bullet points
-    .replace(/â€™/g, "'")
-    .replace(/â€“/g, "-")
-    .replace(/â€œ/g, '"')
-    .replace(/â€/g, '"')
-    .trim();
-}
-
-function showMessageModal(title, text, isSuccess = true) {
-  const modal = document.getElementById('message-modal');
-  const icon = document.getElementById('msg-icon');
-  const titleEl = document.getElementById('msg-title');
-  const textEl = document.getElementById('msg-text');
-
-  if (!modal) {
-    alert(`${title}\n${text}`);
-    return;
-  }
-
-  icon.textContent = isSuccess ? '✅' : '❌';
-  titleEl.textContent = title;
-  titleEl.style.color = isSuccess ? 'var(--sp-green)' : 'var(--sp-red)';
-  textEl.textContent = text;
-
-  modal.style.display = 'flex';
-}
-
-window.closeMessageModal = () => {
-  const modal = document.getElementById('message-modal');
-  if (modal) modal.style.display = 'none';
-}
-
-function initAutoArrange() {
-  if (!autoArrangeBtn) return;
-
-  autoArrangeBtn.addEventListener('click', async () => {
-    const icon = document.getElementById('arrange-icon');
-    const text = document.getElementById('arrange-text');
-    const originalIcon = icon.textContent;
-
-    // Loading State
-    autoArrangeBtn.disabled = true;
-    autoArrangeBtn.style.opacity = '0.8';
-    icon.innerHTML = '<span style="display:inline-block;width:14px;height:14px;border:2px solid white;border-right-color:transparent;border-radius:50%;animation:spin 1s linear infinite;"></span>';
-    text.textContent = 'Processing...';
-
-    try {
-      const response = await fetch(N8N_AUTO_ARRANGE_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'auto_arrange', timestamp: new Date().toISOString() })
-      });
-
-      if (response.ok) {
-        showMessageModal('Success!', 'Google Drive files have been organized successfully.', true);
-      } else {
-        throw new Error('Webhook returned error');
-      }
-    } catch (err) {
-      console.error('Auto Arrange Error:', err);
-      showMessageModal('Error', 'Failed to trigger auto-arrange. Please try again.', false);
-    } finally {
-      // Reset UI
-      autoArrangeBtn.disabled = false;
-      autoArrangeBtn.style.opacity = '1';
-      icon.textContent = originalIcon;
-      text.textContent = 'Auto Arrange Drive';
-    }
-  });
-}
-
 function populateModal(data) {
   // Helper to safely set text
   const setText = (id, val) => {
     const el = document.getElementById(id)
-    if (el) el.textContent = cleanText(val) || '-'
+    if (el) el.textContent = val || '-'
   }
 
   setText('modal-filename', data.file_name)
@@ -275,13 +239,10 @@ function populateModal(data) {
     const points = data.key_points || []
     if (points.length > 0) {
       points.forEach(point => {
-        const cleanedPoint = cleanText(point);
-        if (cleanedPoint) {
-          const li = document.createElement('li')
-          li.textContent = cleanedPoint
-          li.style.marginBottom = '8px'
-          insightsList.appendChild(li)
-        }
+        const li = document.createElement('li')
+        li.textContent = point
+        li.style.marginBottom = '8px'
+        insightsList.appendChild(li)
       })
     } else {
       insightsList.innerHTML = '<li style="color:var(--text-muted); list-style:none;">No specific insights extracted.</li>'
