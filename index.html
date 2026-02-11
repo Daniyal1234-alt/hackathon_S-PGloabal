@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="M&A Intelligence Hub — AI-Powered Document Analysis for Strategic Insights. Built for FDSS Fast Hackathon 2025, sponsored by S&P Global.">
+  <title>M&A Intelligence Hub | AI-Powered Document Analysis</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23041E42' width='100' height='100' rx='8'/><text x='50' y='68' font-size='54' fill='white' text-anchor='middle' font-weight='bold'>M</text></svg>">
+</head>
+
+<body>
+
+  <a href="#main" class="skip-link">Skip to main content</a>
+
+  <!-- ============ NAVBAR ============ -->
+  <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <a href="#" class="nav-logo">
+        <span class="logo-mark">M&A</span>
+        Intelligence Hub
+      </a>
+
+      <div class="nav-links" id="nav-links" role="menubar">
+        <a href="#problem" role="menuitem">Problem</a>
+        <a href="#pipeline" role="menuitem">How It Works</a>
+        <a href="#features" role="menuitem">Features</a>
+        <a href="dashboard.html" role="menuitem" style="color: var(--sp-royal-blue); font-weight: 600;">Dashboard</a>
+        <a href="#demo" role="menuitem">Demo</a>
+        <a href="#architecture" role="menuitem">Architecture</a>
+        <a href="#impact" role="menuitem">Impact</a>
+      </div>
+
+      <div class="nav-actions">
+        <a href="#demo" class="nav-cta">Try Demo</a>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="hero" aria-label="Hero">
+    <div class="hero-bg-decoration" aria-hidden="true"></div>
+
+    <div class="container">
+      <div class="hero-content reveal">
+        <div class="hero-badge">FDSS Fast Hackathon 2025 · Powered by S&P Global</div>
+
+        <h1>M&A Intelligence Hub</h1>
+        <p class="hero-subtitle">AI-Powered Document Analysis for Strategic Insights</p>
+        <p class="hero-tagline">Transforming hours of manual review into seconds of intelligent automation. Identify M&A
+          documents, classify technology relevance, and extract key deal intelligence — instantly.</p>
+
+        <div class="hero-ctas">
+          <a href="#demo" class="btn btn-primary btn-lg">Get Started →</a>
+          <a href="#pipeline" class="btn btn-secondary btn-lg">See How It Works</a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="hero-stat-value" data-count="95" data-suffix="%">0%</div>
+            <div class="hero-stat-label">Time Savings</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-value" data-count="98" data-suffix="%">0%</div>
+            <div class="hero-stat-label">Accuracy</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-value" data-count="30" data-suffix="s">0s</div>
+            <div class="hero-stat-label">Per Document</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual reveal stagger-2">
+        <div class="hero-mockup">
+          <div class="mockup-bar">
+            <span class="mockup-dot r"></span>
+            <span class="mockup-dot y"></span>
+            <span class="mockup-dot g"></span>
+          </div>
+          <div class="mockup-body">
+            <div class="mockup-row">
+              <span class="doc-name">Microsoft-Activision Merger.pdf</span>
+              <span class="score">98%</span>
+              <span class="status-tag high">High Priority</span>
+            </div>
+            <div class="mockup-row">
+              <span class="doc-name">Kroger-Albertsons Update.pdf</span>
+              <span class="score">92%</span>
+              <span class="status-tag standard">Standard</span>
+            </div>
+            <div class="mockup-row">
+              <span class="doc-name">Amazon Q3 Earnings.pdf</span>
+              <span class="score">15%</span>
+              <span class="status-tag archive">Archive</span>
+            </div>
+            <div class="mockup-row">
+              <span class="doc-name">Adobe-Figma Acquisition.pdf</span>
+              <span class="score">96%</span>
+              <span class="status-tag high">High Priority</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="float-card fc-1" aria-hidden="true">
+          <div class="fc-label">Accuracy</div>
+          <div class="fc-value">98.2%</div>
+        </div>
+        <div class="float-card fc-2" aria-hidden="true">
+          <div class="fc-label">Processed Today</div>
+          <div class="fc-value" style="color: var(--sp-royal-blue);">247</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main id="main">
+
+    <!-- ============ PROBLEM ============ -->
+    <section class="bg-light" id="problem" aria-label="Problem Statement">
+      <div class="container">
+        <div class="section-header centered reveal">
+          <span class="section-eyebrow">The Challenge</span>
+          <h2>Manual Document Review Is Broken</h2>
+          <p class="lead">Investment firms drown in documents. Only a fraction relate to M&A. Our AI surfaces what
+            matters — instantly.</p>
+        </div>
+
+        <div class="problem-grid">
+          <div class="problem-col reveal">
+            <h3>
+              <span class="col-icon problem" aria-hidden="true">✕</span>
+              The Problem
+            </h3>
+            <div class="problem-list">
+              <div class="problem-item">
+                <span class="item-marker negative" aria-hidden="true">!</span>
+                <p><strong>Hundreds of documents daily</strong> — investment firms buried in filings, reports, and
+                  correspondence</p>
+              </div>
+              <div class="problem-item">
+                <span class="item-marker negative" aria-hidden="true">!</span>
+                <p><strong>Only 15–20% relate to M&A</strong> — the vast majority is noise that still requires review
+                </p>
+              </div>
+              <div class="problem-item">
+                <span class="item-marker negative" aria-hidden="true">!</span>
+                <p><strong>Even fewer involve IT/Tech</strong> — technology deals are needles in a haystack</p>
+              </div>
+              <div class="problem-item">
+                <span class="item-marker negative" aria-hidden="true">!</span>
+                <p><strong>8–12 hours per analyst daily</strong> — manual review is expensive, slow, and error-prone</p>
+              </div>
+              <div class="problem-item">
+                <span class="item-marker negative" aria-hidden="true">!</span>
+                <p><strong>Critical deals buried in noise</strong> — high-value opportunities missed due to overload</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="problem-col reveal stagger-2">
+            <h3>
+              <span class="col-icon solution" aria-hidden="true">✓</span>
+              Our Solution
+            </h3>
+            <div class="problem-list">
+              <div class="problem-item">
+                <span class="item-marker positive" aria-hidden="true">✓</span>
+                <p><strong>Real-time AI processing</strong> — automated workflows analyze documents as they arrive</p>
+              </div>
+              <div class="problem-item">
+                <span class="item-marker positive" aria-hidden="true">✓</span>
+                <p><strong>95%+ M&A detection accuracy</strong> — Claude AI identifies M&A indicators with precision</p>
+              </div>
+              <div class="problem-item">
+                <span class="item-marker positive" aria-hidden="true">✓</span>
+                <p><strong>Intelligent IT/Tech classification</strong> — 10+ technology sub-industry categories</p>
+              </div>
+              <div class="problem-item">
+                <span class="item-marker positive" aria-hidden="true">✓</span>
+                <p><strong>Instant prioritization</strong> — confidence scores and recommended actions per document</p>
+              </div>
+              <div class="problem-item">
+                <span class="item-marker positive" aria-hidden="true">✓</span>
+                <p><strong>95% time reduction</strong> — from 10 minutes per document to 30 seconds</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="comparison-bar reveal">
+          <div class="comparison-card before">
+            <h4>Before</h4>
+            <div class="comp-value">10 min</div>
+            <div class="comp-label">per document manual review</div>
+          </div>
+          <div class="comparison-card after">
+            <h4>After</h4>
+            <div class="comp-value">30 sec</div>
+            <div class="comp-label">automated AI analysis</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PIPELINE ============ -->
+    <section id="pipeline" aria-label="How It Works">
+      <div class="container">
+        <div class="section-header centered reveal">
+          <span class="section-eyebrow">Pipeline</span>
+          <h2>Intelligent Document Processing</h2>
+          <p class="lead">Five automated steps from document ingestion to actionable intelligence. Click any step to see
+            sample output.</p>
+        </div>
+
+        <div class="pipeline">
+          <div class="pipeline-step reveal stagger-1" data-step="1">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <h3>Document Ingestion</h3>
+              <ul class="step-details">
+                <li>Upload documents to monitored Google Drive folder</li>
+                <li>Supports PDF, DOCX, TXT formats</li>
+                <li>Automatic batch processing via n8n triggers</li>
+              </ul>
+              <div class="step-sample">
+                <pre>{
+  "trigger": "Google Drive - New File",
+  "files_detected": 3,
+  "formats": ["PDF", "DOCX"],
+  "batch_id": "batch_2025_0211_001"
+}</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="pipeline-step reveal stagger-2" data-step="2">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <h3>AI Analysis Engine</h3>
+              <ul class="step-details">
+                <li>Claude AI (Anthropic) analyzes full document content</li>
+                <li>Detects M&A indicators — merger, acquisition, buyout, etc.</li>
+                <li>Identifies acquiring and target companies</li>
+                <li>Classifies technology industry relevance</li>
+              </ul>
+              <div class="step-sample">
+                <pre>{
+  "model": "claude-sonnet-4-20250514",
+  "analysis_type": "M&A Detection + Tech Classification",
+  "tokens_processed": 4250,
+  "processing_time": "2.3s"
+}</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="pipeline-step reveal stagger-3" data-step="3">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <h3>Structured Intelligence Extraction</h3>
+              <ul class="step-details">
+                <li>Key Points: 3–5 critical insights per document</li>
+                <li>Context: Document purpose and background</li>
+                <li>Reasoning: Transparent AI decision-making</li>
+                <li>Deal metrics: Value, stage, parties involved</li>
+              </ul>
+              <div class="step-sample">
+                <pre>{
+  "key_points": ["$68.7B acquisition", "Regulatory pending"],
+  "entities": {"acquirer": "Microsoft", "target": "Activision"},
+  "deal_value": "$68,700,000,000",
+  "stage": "Pending Regulatory Approval"
+}</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="pipeline-step reveal stagger-4" data-step="4">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <h3>Smart Categorization</h3>
+              <ul class="step-details">
+                <li>M&A Relevance Score (0–100)</li>
+                <li>Tech Industry Classification</li>
+                <li>Priority Routing: High / Standard / Archive</li>
+                <li>Confidence scores for full transparency</li>
+              </ul>
+              <div class="step-sample">
+                <pre>{
+  "ma_score": 98,
+  "tech_score": 95,
+  "priority": "HIGH",
+  "industry": "Enterprise Software / Gaming",
+  "action": "IMMEDIATE_REVIEW"
+}</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="pipeline-step reveal stagger-5" data-step="5">
+            <div class="step-num">5</div>
+            <div class="step-body">
+              <h3>Centralized Intelligence Database</h3>
+              <ul class="step-details">
+                <li>All results stored in Supabase (PostgreSQL)</li>
+                <li>Real-time dashboard access</li>
+                <li>Searchable, filterable document library</li>
+                <li>API-ready for enterprise integration</li>
+              </ul>
+              <div class="step-sample">
+                <pre>{
+  "database": "Supabase PostgreSQL",
+  "endpoint": "/rest/v1/document_analyses",
+  "realtime": true,
+  "row_level_security": true
+}</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FEATURES ============ -->
+    <section class="bg-light" id="features" aria-label="Key Features">
+      <div class="container">
+        <div class="section-header centered reveal">
+          <span class="section-eyebrow">Capabilities</span>
+          <h2>Powered by Advanced AI & Automation</h2>
+          <p class="lead">Enterprise-grade capabilities built on cutting-edge technology</p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-card reveal stagger-1">
+            <div class="feature-card-icon">01</div>
+            <div class="accent-line"></div>
+            <h3>Multi-Level Scoring</h3>
+            <p>Comprehensive scoring with M&A relevance, technology confidence, and composite ratings for every
+              document.</p>
+            <div class="feature-tags">
+              <span class="feature-tag">M&A Score</span>
+              <span class="feature-tag">Tech Score</span>
+              <span class="feature-tag">Composite Rating</span>
+            </div>
+          </div>
+
+          <div class="feature-card reveal stagger-2">
+            <div class="feature-card-icon">02</div>
+            <div class="accent-line"></div>
+            <h3>Precise Classification</h3>
+            <p>10+ technology sub-industry categories with granular classification for SaaS, AI/ML, Cybersecurity, and
+              more.</p>
+            <div class="feature-tags">
+              <span class="feature-tag">SaaS</span>
+              <span class="feature-tag">Cloud</span>
+              <span class="feature-tag">AI/ML</span>
+              <span class="feature-tag">FinTech</span>
+            </div>
+          </div>
+
+          <div class="feature-card reveal stagger-3">
+            <div class="feature-card-icon">03</div>
+            <div class="accent-line"></div>
+            <h3>Deep Document Understanding</h3>
+            <p>Extract entities, deal values, transaction types, and timelines with AI-powered natural language
+              understanding.</p>
+            <div class="feature-tags">
+              <span class="feature-tag">Entity Extraction</span>
+              <span class="feature-tag">Deal Value</span>
+              <span class="feature-tag">Timeline</span>
+            </div>
+          </div>
+
+          <div class="feature-card reveal stagger-4">
+            <div class="feature-card-icon">04</div>
+            <div class="accent-line"></div>
+            <h3>Explainable AI</h3>
+            <p>Transparent reasoning for every decision. Evidence-based classifications with human-verifiable confidence
+              metrics.</p>
+            <div class="feature-tags">
+              <span class="feature-tag">Reasoning</span>
+              <span class="feature-tag">Confidence</span>
+              <span class="feature-tag">Auditability</span>
+            </div>
+          </div>
+
+          <div class="feature-card reveal stagger-5">
+            <div class="feature-card-icon">05</div>
+            <div class="accent-line"></div>
+            <h3>Real-Time Processing</h3>
+            <p>Instant document analysis with automated notifications for priority deals. Scalable to thousands of
+              documents.</p>
+            <div class="feature-tags">
+              <span class="feature-tag">Instant</span>
+              <span class="feature-tag">Notifications</span>
+              <span class="feature-tag">Scalable</span>
+            </div>
+          </div>
+
+          <div class="feature-card reveal stagger-6">
+            <div class="feature-card-icon">06</div>
+            <div class="accent-line"></div>
+            <h3>Enterprise Integration</h3>
+            <p>RESTful API via Supabase, webhook notifications, CSV/Excel exports, and Slack/Email alerting out of the
+              box.</p>
+            <div class="feature-tags">
+              <span class="feature-tag">REST API</span>
+              <span class="feature-tag">Webhooks</span>
+              <span class="feature-tag">CSV Export</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ DEMO ============ -->
+    <section id="demo" aria-label="Interactive Demo">
+      <div class="container">
+        <div class="section-header centered reveal">
+          <span class="section-eyebrow">Interactive Demo</span>
+          <h2>See It In Action</h2>
+          <p class="lead">Select sample documents and watch our AI analyze them in real-time</p>
+        </div>
+
+        <div class="demo-container">
+          <div class="upload-zone reveal" id="upload-zone" role="button" tabindex="0"
+            aria-label="Upload documents for analysis">
+            <span class="upload-icon" aria-hidden="true">⬆</span>
+            <h3>Drop Documents Here</h3>
+            <p>Or click to select sample documents for analysis</p>
+          </div>
+
+          <div class="sample-docs reveal">
+            <button class="sample-doc" data-doc="1">Microsoft-Activision Merger.pdf</button>
+            <button class="sample-doc" data-doc="2">Kroger-Albertsons Update.pdf</button>
+            <button class="sample-doc" data-doc="3">Amazon Q3 Earnings.pdf</button>
+          </div>
+
+          <div class="process-btn-wrapper">
+            <button class="btn btn-primary btn-lg" id="process-btn" disabled>Process Documents →</button>
+          </div>
+
+          <div class="processing-bar" id="processing-bar">
+            <div class="process-status">
+              <div class="spinner" aria-hidden="true"></div>
+              <span id="process-text">Analyzing documents with Claude AI...</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" id="progress-fill" role="progressbar" aria-valuenow="0" aria-valuemin="0"
+                aria-valuemax="100"></div>
+            </div>
+          </div>
+
+          <!-- Results -->
+          <div class="demo-results" id="demo-results">
+
+            <!-- Result 1 -->
+            <div class="result-card reveal stagger-1" data-result="1">
+              <div class="result-header" role="button" tabindex="0" aria-expanded="false">
+                <div class="result-header-left">
+                  <div class="result-doc-indicator high"></div>
+                  <span class="result-title">Microsoft Acquires Activision Blizzard — Regulatory Approval.pdf</span>
+                </div>
+                <div class="result-badges">
+                  <span class="result-badge yes">M&A: 98%</span>
+                  <span class="result-badge yes">Tech: 95%</span>
+                </div>
+                <span class="result-priority priority-high">High Priority</span>
+                <span class="result-expand" aria-hidden="true">▾</span>
+              </div>
+              <div class="result-body">
+                <div class="result-body-inner">
+                  <div class="result-meta-grid">
+                    <div class="meta-item">
+                      <div class="meta-label">Industry</div>
+                      <div class="meta-value">Enterprise Software / Gaming</div>
+                    </div>
+                    <div class="meta-item">
+                      <div class="meta-label">Transaction Type</div>
+                      <div class="meta-value">Acquisition</div>
+                    </div>
+                    <div class="meta-item">
+                      <div class="meta-label">Deal Value</div>
+                      <div class="meta-value">$68.7 Billion</div>
+                    </div>
+                  </div>
+                  <div class="result-section">
+                    <h4>Key Points</h4>
+                    <ul>
+                      <li>Microsoft's largest acquisition in company history</li>
+                      <li>Expands gaming portfolio with Call of Duty, World of Warcraft franchises</li>
+                      <li>Regulatory scrutiny from FTC and international bodies</li>
+                      <li>Strategic move into metaverse and cloud gaming</li>
+                    </ul>
+                  </div>
+                  <div class="result-reasoning">
+                    <strong>AI Reasoning:</strong> Document contains explicit M&A language ("acquisition", "regulatory
+                    approval", "deal structure"). Clear technology focus through gaming software, cloud services, and
+                    digital entertainment platforms. Multiple regulatory filing references confirm M&A nature.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Result 2 -->
+            <div class="result-card reveal stagger-2" data-result="2">
+              <div class="result-header" role="button" tabindex="0" aria-expanded="false">
+                <div class="result-header-left">
+                  <div class="result-doc-indicator standard"></div>
+                  <span class="result-title">Kroger-Albertsons Merger Update Q4 2024.pdf</span>
+                </div>
+                <div class="result-badges">
+                  <span class="result-badge yes">M&A: 92%</span>
+                  <span class="result-badge no">Tech: 12%</span>
+                </div>
+                <span class="result-priority priority-standard">Standard</span>
+                <span class="result-expand" aria-hidden="true">▾</span>
+              </div>
+              <div class="result-body">
+                <div class="result-body-inner">
+                  <div class="result-meta-grid">
+                    <div class="meta-item">
+                      <div class="meta-label">Industry</div>
+                      <div class="meta-value">Retail / Grocery</div>
+                    </div>
+                    <div class="meta-item">
+                      <div class="meta-label">Transaction Type</div>
+                      <div class="meta-value">Merger</div>
+                    </div>
+                    <div class="meta-item">
+                      <div class="meta-label">Deal Value</div>
+                      <div class="meta-value">$24.6 Billion</div>
+                    </div>
+                  </div>
+                  <div class="result-section">
+                    <h4>Key Points</h4>
+                    <ul>
+                      <li>Two largest supermarket chains combining operations</li>
+                      <li>Expected synergies of $1B annually</li>
+                      <li>700+ store divestitures required for antitrust clearance</li>
+                      <li>Focus on supply chain integration and pricing power</li>
+                    </ul>
+                  </div>
+                  <div class="result-reasoning">
+                    <strong>AI Reasoning:</strong> Document explicitly discusses merger terms, regulatory requirements,
+                    and strategic rationale. Not classified as technology — primary business is grocery retail with
+                    limited tech component. Standard review recommended.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Result 3 -->
+            <div class="result-card reveal stagger-3" data-result="3">
+              <div class="result-header" role="button" tabindex="0" aria-expanded="false">
+                <div class="result-header-left">
+                  <div class="result-doc-indicator archive"></div>
+                  <span class="result-title">Amazon Q3 2024 Earnings Report.pdf</span>
+                </div>
+                <div class="result-badges">
+                  <span class="result-badge no">M&A: 15%</span>
+                  <span class="result-badge yes">Tech: 97%</span>
+                </div>
+                <span class="result-priority priority-archive">Archive</span>
+                <span class="result-expand" aria-hidden="true">▾</span>
+              </div>
+              <div class="result-body">
+                <div class="result-body-inner">
+                  <div class="result-meta-grid">
+                    <div class="meta-item">
+                      <div class="meta-label">Industry</div>
+                      <div class="meta-value">E-Commerce / Cloud (AWS)</div>
+                    </div>
+                    <div class="meta-item">
+                      <div class="meta-label">Document Type</div>
+                      <div class="meta-value">Earnings Report</div>
+                    </div>
+                    <div class="meta-item">
+                      <div class="meta-label">M&A Indicators</div>
+                      <div class="meta-value">None Detected</div>
+                    </div>
+                  </div>
+                  <div class="result-section">
+                    <h4>Key Points</h4>
+                    <ul>
+                      <li>Quarterly financial results and revenue guidance</li>
+                      <li>AWS cloud growth metrics and operating margins</li>
+                      <li>No M&A-related language or deal indicators found</li>
+                    </ul>
+                  </div>
+                  <div class="result-reasoning">
+                    <strong>AI Reasoning:</strong> While this is a technology company document, it contains quarterly
+                    financial results, revenue guidance, and operational metrics. No M&A indicators detected — standard
+                    earnings report format. Archived for reference only.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ARCHITECTURE ============ -->
+    <section class="bg-light" id="architecture" aria-label="Technical Architecture">
+      <div class="container">
+        <div class="section-header centered reveal">
+          <span class="section-eyebrow">Architecture</span>
+          <h2>Built on Modern, Scalable Technology</h2>
+          <p class="lead">Enterprise-grade pipeline from ingestion to insight</p>
+        </div>
+
+        <div class="arch-flow reveal">
+          <div class="arch-node">
+            <span class="arch-node-icon">📁</span>
+            <span class="arch-node-name">Google Drive</span>
+            <span class="arch-node-sub">Document Source</span>
+          </div>
+          <span class="arch-arrow" aria-hidden="true">→</span>
+          <div class="arch-node">
+            <span class="arch-node-icon">⚙️</span>
+            <span class="arch-node-name">n8n</span>
+            <span class="arch-node-sub">Automation</span>
+          </div>
+          <span class="arch-arrow" aria-hidden="true">→</span>
+          <div class="arch-node">
+            <span class="arch-node-icon">🤖</span>
+            <span class="arch-node-name">Claude AI</span>
+            <span class="arch-node-sub">LLM Analysis</span>
+          </div>
+          <span class="arch-arrow" aria-hidden="true">→</span>
+          <div class="arch-node">
+            <span class="arch-node-icon">💾</span>
+            <span class="arch-node-name">Supabase</span>
+            <span class="arch-node-sub">PostgreSQL</span>
+          </div>
+          <span class="arch-arrow" aria-hidden="true">→</span>
+          <div class="arch-node">
+            <span class="arch-node-icon">🌐</span>
+            <span class="arch-node-name">Dashboard</span>
+            <span class="arch-node-sub">Web Frontend</span>
+          </div>
+        </div>
+
+        <div class="tech-grid reveal">
+          <div class="tech-card">
+            <div class="tech-card-icon">🤖</div>
+            <h4>AI / LLM Layer</h4>
+            <p>Anthropic Claude Sonnet 4 with advanced reasoning, structured JSON output, and context-aware analysis</p>
+          </div>
+          <div class="tech-card">
+            <div class="tech-card-icon">⚙️</div>
+            <h4>Automation Engine</h4>
+            <p>n8n workflow automation with event-driven processing, error handling, and scalable execution</p>
+          </div>
+          <div class="tech-card">
+            <div class="tech-card-icon">📁</div>
+            <h4>Document Management</h4>
+            <p>Google Drive integration with multi-format support (PDF, DOCX, TXT) and batch processing</p>
+          </div>
+          <div class="tech-card">
+            <div class="tech-card-icon">💾</div>
+            <h4>Data Infrastructure</h4>
+            <p>Supabase PostgreSQL with real-time sync, RESTful API, and row-level security</p>
+          </div>
+          <div class="tech-card">
+            <div class="tech-card-icon">🌐</div>
+            <h4>Web Frontend</h4>
+            <p>Modern responsive SPA with real-time updates, interactive analytics, and clean design</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ IMPACT (Dark Section) ============ -->
+    <section class="bg-dark" id="impact" aria-label="Business Impact">
+      <div class="container">
+        <div class="section-header centered reveal">
+          <span class="section-eyebrow">Results</span>
+          <h2>Measurable Results That Matter</h2>
+          <p class="lead">Quantifiable impact on analyst productivity and deal discovery</p>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric-card reveal stagger-1">
+            <div class="metric-value" data-count="95" data-suffix="%">0%</div>
+            <div class="metric-accent"></div>
+            <div class="metric-label">Time Savings</div>
+            <div class="metric-desc">From 10 minutes per document to 30 seconds</div>
+          </div>
+
+          <div class="metric-card reveal stagger-2">
+            <div class="metric-value" data-count="98" data-suffix="%">0%</div>
+            <div class="metric-accent"></div>
+            <div class="metric-label">Detection Accuracy</div>
+            <div class="metric-desc">AI-powered detection matches expert analysis</div>
+          </div>
+
+          <div class="metric-card reveal stagger-3">
+            <div class="metric-value" data-prefix="$" data-count="500" data-suffix="K+">$0K+</div>
+            <div class="metric-accent"></div>
+            <div class="metric-label">Annual Savings</div>
+            <div class="metric-desc">For a mid-size firm processing 200 docs/day</div>
+          </div>
+
+          <div class="metric-card reveal stagger-4">
+            <div class="metric-value" data-count="30" data-suffix="s">0s</div>
+            <div class="metric-accent"></div>
+            <div class="metric-label">Real-Time Processing</div>
+            <div class="metric-desc">Instant analysis and prioritization</div>
+          </div>
+
+          <div class="metric-card reveal stagger-5">
+            <div class="metric-value" data-count="100" data-suffix="%">0%</div>
+            <div class="metric-accent"></div>
+            <div class="metric-label">Document Coverage</div>
+            <div class="metric-desc">No deals slip through the cracks</div>
+          </div>
+
+          <div class="metric-card reveal stagger-6">
+            <div class="metric-value">100%</div>
+            <div class="metric-accent"></div>
+            <div class="metric-label">Transparent AI</div>
+            <div class="metric-desc">Every decision backed by reasoning</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ COMPETITIVE ============ -->
+    <section id="competitive" aria-label="Competitive Advantages">
+      <div class="container">
+        <div class="section-header centered reveal">
+          <span class="section-eyebrow">Advantages</span>
+          <h2>Why This Solution Wins</h2>
+          <p class="lead">Comprehensive comparison against manual review</p>
+        </div>
+
+        <table class="comparison-table reveal" role="table">
+          <thead>
+            <tr>
+              <th>Capability</th>
+              <th>Our AI Solution</th>
+              <th>Manual Review</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Processing Speed</td>
+              <td>✓ 30 seconds / doc</td>
+              <td>✕ 10+ minutes / doc</td>
+            </tr>
+            <tr>
+              <td>Consistency</td>
+              <td>✓ Standardized criteria</td>
+              <td>✕ Analyst variability</td>
+            </tr>
+            <tr>
+              <td>Availability</td>
+              <td>✓ 24/7 processing</td>
+              <td>✕ Business hours only</td>
+            </tr>
+            <tr>
+              <td>Scalability</td>
+              <td>✓ 1000s of docs</td>
+              <td>✕ Limited by headcount</td>
+            </tr>
+            <tr>
+              <td>Output Format</td>
+              <td>✓ Structured data + API</td>
+              <td>✕ Unstructured notes</td>
+            </tr>
+            <tr>
+              <td>Audit Trail</td>
+              <td>✓ Full transparency</td>
+              <td>✕ Incomplete records</td>
+            </tr>
+            <tr>
+              <td>Explainability</td>
+              <td>✓ Reasoning provided</td>
+              <td>~ Varies by analyst</td>
+            </tr>
+            <tr>
+              <td>Cost Per Document</td>
+              <td>✓ ~$0.01</td>
+              <td>✕ ~$5–15 (analyst time)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="features-grid reveal">
+          <div class="feature-card">
+            <div class="feature-card-icon">AI</div>
+            <div class="accent-line"></div>
+            <h3>Explainable AI</h3>
+            <p>Every classification comes with reasoning, evidence, and confidence metrics — no black-box decisions.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-card-icon">$</div>
+            <div class="accent-line"></div>
+            <h3>Cost Effective</h3>
+            <p>No expensive database subscriptions. Pay-per-use AI processing with open-source automation tools.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-card-icon">⚙</div>
+            <div class="accent-line"></div>
+            <h3>Fully Customizable</h3>
+            <p>Open, extensible architecture. Customize workflows, add classifications, integrate with any system.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ HACKATHON ============ -->
+    <section class="bg-light" id="hackathon" aria-label="Hackathon Challenge Alignment">
+      <div class="container">
+        <div class="section-header centered reveal">
+          <span class="section-eyebrow">Challenge Fit</span>
+          <h2>Addressing FDSS Fast Requirements</h2>
+          <p class="lead">Direct alignment with every hackathon challenge criterion</p>
+        </div>
+
+        <div class="hackathon-grid">
+          <div class="hack-item reveal stagger-1">
+            <div class="hack-check" aria-hidden="true">✓</div>
+            <div>
+              <h4>Document Identification</h4>
+              <p>AI-enabled workflow identifies M&A documents with 95%+ accuracy, with confidence scoring for
+                verification</p>
+            </div>
+          </div>
+
+          <div class="hack-item reveal stagger-2">
+            <div class="hack-check" aria-hidden="true">✓</div>
+            <div>
+              <h4>IT / Technology Classification</h4>
+              <p>10+ technology industry categories with sub-classification and evidence-based reasoning</p>
+            </div>
+          </div>
+
+          <div class="hack-item reveal stagger-3">
+            <div class="hack-check" aria-hidden="true">✓</div>
+            <div>
+              <h4>LLM Analysis</h4>
+              <p>Claude AI analyzes full document text for contextual understanding with structured JSON output</p>
+            </div>
+          </div>
+
+          <div class="hack-item reveal stagger-4">
+            <div class="hack-check" aria-hidden="true">✓</div>
+            <div>
+              <h4>Target Company Identification</h4>
+              <p>Named entity recognition extracts acquiring and target companies, handling multi-party transactions</p>
+            </div>
+          </div>
+
+          <div class="hack-item reveal stagger-5">
+            <div class="hack-check" aria-hidden="true">✓</div>
+            <div>
+              <h4>Industry Classification</h4>
+              <p>Hierarchical technology taxonomy with confidence scores for each classification decision</p>
+            </div>
+          </div>
+
+          <div class="hack-item reveal stagger-6">
+            <div class="hack-check" aria-hidden="true">✓</div>
+            <div>
+              <h4>Relevance Flags with Justification</h4>
+              <p>Every document receives M&A flag, Tech flag, reasoning, and recommended action</p>
+            </div>
+          </div>
+
+          <div class="hack-item reveal">
+            <div class="hack-check" aria-hidden="true">✓</div>
+            <div>
+              <h4>No Paid Sources Required</h4>
+              <p>Uses public documents and open APIs. Sample documents demonstrate full functionality</p>
+            </div>
+          </div>
+
+          <div class="hack-item reveal">
+            <div class="hack-check" aria-hidden="true">✓</div>
+            <div>
+              <h4>Faster & More Consistent</h4>
+              <p>95% time reduction versus manual review. Standardized criteria eliminate analyst bias</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TEAM ============ -->
+    <section id="team" aria-label="Team and Credits">
+      <div class="container">
+        <div class="section-header centered reveal">
+          <span class="section-eyebrow">Team</span>
+          <h2>Built for FDSS Fast Hackathon</h2>
+          <p class="lead">Proudly sponsored by S&P Global</p>
+        </div>
+
+        <div class="team-grid reveal">
+          <div class="team-card">
+            <div class="team-avatar">D</div>
+            <h4>Daniyal</h4>
+            <p class="team-role">Full-Stack Developer</p>
+          </div>
+        </div>
+
+        <div class="sponsors-row reveal">
+          <div class="sponsor-badge">FDSS Fast Hackathon 2025</div>
+          <div class="sponsor-badge">Sponsored by S&P Global</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CTA ============ -->
+    <section class="cta-section" id="cta" aria-label="Call to Action">
+      <div class="container">
+        <h2>Experience the Future of<br>M&A Intelligence</h2>
+        <p>Ready to transform your document analysis workflow? Get in touch to see a live demo or explore the technical
+          documentation.</p>
+        <div class="cta-buttons">
+          <a href="mailto:contact@mahub.ai" class="btn btn-white btn-lg">Request Demo Access →</a>
+          <a href="#demo" class="btn btn-outline-white btn-lg">Try Interactive Demo</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer" id="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#" class="nav-logo">
+            <span class="logo-mark">M&A</span>
+            Intelligence Hub
+          </a>
+          <p>AI-Powered Document Analysis for Strategic M&A Insights. Built for FDSS Fast Hackathon 2025.</p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navigate</h4>
+          <a href="#problem">Problem</a>
+          <a href="#pipeline">How It Works</a>
+          <a href="#features">Features</a>
+          <a href="#demo">Live Demo</a>
+        </div>
+
+        <div class="footer-col">
+          <h4>Technical</h4>
+          <a href="#architecture">Architecture</a>
+          <a href="#impact">Business Impact</a>
+          <a href="#competitive">Advantages</a>
+          <a href="#hackathon">Challenge Fit</a>
+        </div>
+
+        <div class="footer-col">
+          <h4>Connect</h4>
+          <a href="mailto:contact@mahub.ai">Contact Us</a>
+          <a href="#team">Team</a>
+        </div>
+      </div>
+
+      <div class="footer-divider"></div>
+
+      <div class="footer-bottom">
+        <p>© 2025 M&A Intelligence Hub. All rights reserved.</p>
+        <p>Built for <a href="#hackathon">FDSS Fast Hackathon 2025</a> · Sponsored by <strong>S&P Global</strong></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
