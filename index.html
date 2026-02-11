@@ -477,6 +477,23 @@
             </div>
           </div>
 
+          <!-- Google Drive Link Input -->
+          <div class="drive-link-section reveal"
+            style="margin-top: 40px; padding-top: 30px; border-top: 1px solid var(--border-color); text-align: center;">
+            <p style="margin-bottom: 16px; font-weight: 500; color: var(--text-secondary);">Or analyze a Google Drive
+              Folder:</p>
+            <form id="drive-link-form"
+              style="display: flex; gap: 10px; justify-content: center; max-width: 500px; margin: 0 auto; flex-wrap: wrap;">
+              <input type="text" id="drive-link-input" placeholder="Paste Google Drive Shared Link..." required
+                style="flex: 1; min-width: 250px; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-size: 1rem; font-family: var(--font-primary); outline: none; transition: border-color 0.2s;"
+                onfocus="this.style.borderColor='var(--sp-royal-blue)'"
+                onblur="this.style.borderColor='var(--border-color)'">
+              <button type="submit" class="btn btn-secondary">Analyze Folder</button>
+            </form>
+            <div id="drive-link-message"
+              style="margin-top: 12px; font-size: 0.9rem; min-height: 24px; font-weight: 500;"></div>
+          </div>
+
           <!-- Results -->
           <div class="demo-results" id="demo-results">
 

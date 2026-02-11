@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initCounters();
     initResultCards();
     initActiveNav();
+    initDriveLink();
 });
 
 /* -------------------------------------------
@@ -472,3 +473,56 @@ document.addEventListener('DOMContentLoaded', () => {
         error.style.display = 'none';
     });
 });
+
+/* ============================================
+   GOOGLE DRIVE LINK HANDLER
+   ============================================ */
+function initDriveLink() {
+    const form = document.getElementById('drive-link-form');
+    const input = document.getElementById('drive-link-input');
+    const msg = document.getElementById('drive-link-message');
+    const btn = form?.querySelector('button');
+
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const link = input.value.trim();
+        if (!link) return;
+
+        // Loading state
+        btn.disabled = true;
+        const originalText = btn.textContent;
+        btn.innerHTML = 'Loading... <span class="spinner" style="display:inline-block;width:12px;height:12px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:spin 1s linear infinite;margin-left:8px;"></span>';
+        msg.textContent = '';
+        msg.style.color = 'var(--text-secondary)';
+
+        try {
+            const response = await fetch('https://xcorre.app.n8n.cloud/webhook/39efc486-e1f0-47c0-80fd-63cf484f5357', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ link: link })
+            });
+
+            if (response.ok) {
+                msg.textContent = '✅ Analysis started successfully! Check Dashboard.';
+                msg.style.color = 'var(--sp-green)';
+                input.value = '';
+
+                // Add a small link to dashboard
+                setTimeout(() => {
+                    msg.innerHTML += ' <a href="dashboard.html" style="text-decoration:underline;">View Dashboard</a>';
+                }, 500);
+            } else {
+                throw new Error('Webhook failed');
+            }
+        } catch (error) {
+            console.error(error);
+            msg.textContent = '❌ Request failed. Please check the link and try again.';
+            msg.style.color = 'var(--sp-red)';
+        } finally {
+            btn.disabled = false;
+            btn.textContent = originalText;
+        }
+    });
+}
