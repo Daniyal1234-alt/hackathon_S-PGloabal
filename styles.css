@@ -1,4 +1,4 @@
-/* ============================================
+﻿/* ============================================
    M&A Intelligence Hub - S&P Global Design System
    FDSS Fast Hackathon 2025 | S&P Global
    ============================================ */
@@ -980,7 +980,7 @@ section {
 }
 
 .step-details li::before {
-  content: '→';
+  content: 'â†’';
   color: var(--sp-royal-blue);
   font-weight: 600;
   flex-shrink: 0;
@@ -1418,7 +1418,7 @@ section {
 }
 
 .result-section li::before {
-  content: '•';
+  content: 'â€¢';
   color: var(--sp-royal-blue);
   font-weight: 700;
   flex-shrink: 0;
@@ -2168,5 +2168,6 @@ section {
   padding: 1.5rem 3rem !important;
   font-size: 1.25rem !important;
 }
+
 
 
